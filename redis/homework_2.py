@@ -16,7 +16,14 @@ def article_vote(redis, user, article):
 
 def article_switch_vote(redis, user, from_article, to_article):
     # HOMEWORK 2 Part I
-    pass
+    from_id = from_article.split(':')[-1]
+    to_id = to_article.split(':')[-1]
+    if redis.sismember('voted:' + from_id, user) and not redis.sismember('voted:' + to_id, user):
+        redis.srem('voted:' + from_id, user)
+        redis.sadd('voted:' + to_id, user)
+        temp = redis.hget(to_article, "votes")
+    	redis.hset(to_article, "votes", redis.hget(from_article, "votes"))
+    	redis.hset(from_article, "votes", temp)
 
 redis = redis.StrictRedis(host='localhost', port=6379, db=0)
 # user:3 up votes article:1
@@ -29,6 +36,5 @@ article_switch_vote(redis, "user:2", "article:8", "article:1")
 # Which article's score is between 10 and 20?
 # PRINT THE ARTICLE'S LINK TO STDOUT:
 # HOMEWORK 2 Part II
-# article = redis.?
-# print redis.?
-
+article = redis.zrangebyscore(name="score:", min="10", max="20")
+print redis.hget(article, "link")
