@@ -5,3 +5,72 @@
 // If you'd like to test your commands, you can run 'cat homework_4.txt | cypher-shell -u neo4j -p test' from
 // the vagrant box command line. Make sure neo4j is running first.
 // CREATE (a:person { name: 't' });
+
+// my database is based on Harry Potter
+MATCH (n)
+DETACH DELETE n;
+
+CREATE (a:character {name: 'Harry Potter', property: 'adventurous', label: 'protagonist'});
+CREATE (a:character {name: 'Ron Weasley', property: 'loyal', label: 'helper'});
+CREATE (a:character {name: 'Hermione Granger', property: 'intelligent', label: 'beauty'});
+CREATE (a:character {name: 'Albus Dumbledore', property: 'benign', label: 'school principle'});
+CREATE (a:character {name: 'Severus Snape', property: 'stern', label: 'half-blood'});
+CREATE (a:character {name: 'Lord Voldemort', property: 'powerful', label: 'villain'});
+CREATE (a:character {name: 'Sirius Black', property: 'gracious', label: 'godfather'});
+CREATE (a:character {name: 'Bellatrix Lestrange', property: 'mad', label: 'betrayer'});
+
+// 1
+MATCH (a:character), (b:character)
+WHERE a.name = 'Harry Potter' AND b.name = 'Ron Weasley'
+CREATE (a)-[r:friends]->(b);
+// 2
+MATCH (a:character), (b:character)
+WHERE a.name = 'Harry Potter' AND b.name = 'Hermione Granger'
+CREATE (a)-[r:friends]->(b);
+// 3
+MATCH (a:character), (b:character)
+WHERE a.name = 'Ron Weasley' AND b.name = 'Hermione Granger'
+CREATE (a)-[r:couple {property: "nobody could expect this relationship early in the show"}]->(b);
+// 4
+MATCH (a:character), (b:character)
+WHERE a.name = 'Albus Dumbledore' AND b.name = 'Hermione Granger'
+CREATE (a)-[r:teacher]->(b);
+// 5
+MATCH (a:character), (b:character)
+WHERE a.name = 'Albus Dumbledore' AND b.name = 'Harry Potter'
+CREATE (a)-[r:teacher]->(b);
+// 6
+MATCH (a:character), (b:character)
+WHERE a.name = 'Albus Dumbledore' AND b.name = 'Ron Weasley'
+CREATE (a)-[r:teacher]->(b);
+// 7
+MATCH (a:character), (b:character)
+WHERE a.name = 'Albus Dumbledore' AND b.name = 'Severus Snape'
+CREATE (a)-[r:killed]->(b);
+// 8
+MATCH (a:character), (b:character)
+WHERE a.name = 'Severus Snape' AND b.name = 'Lord Voldemort'
+CREATE (a)-[r:killed {property: "Snape is actually a good person"}]->(b);
+// 9
+MATCH (a:character), (b:character)
+WHERE a.name = 'Harry Potter' AND b.name = 'Lord Voldemort'
+CREATE (a)-[r:enemy {property: "Harry's mother and father are killed"}]->(b);
+// 10
+MATCH (a:character), (b:character)
+WHERE a.name = 'Harry Potter' AND b.name = 'Sirius Black'
+CREATE (a)-[r:family {property: "only family member alive"}]->(b);
+// 11
+MATCH (a:character), (b:character)
+WHERE a.name = 'Bellatrix Lestrange' AND b.name = 'Sirius Black'
+CREATE (a)-[r:kill {property: "they are siblings"}]->(b);
+// 12
+MATCH (a:character), (b:character)
+WHERE a.name = 'Bellatrix Lestrange' AND b.name = 'Lord Voldemort'
+CREATE (a)-[r:servant]->(b);
+
+// Queries
+MATCH (c:character {name:'Harry Potter'})-[r]-(character)
+RETURN r, character;
+MATCH (c:character {name:'Lord Voldemort'})-[r]-(character)
+RETURN r, character;
+
