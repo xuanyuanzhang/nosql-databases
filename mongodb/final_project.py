@@ -15,7 +15,8 @@
 # 
 # Answer:
 # Information on that specific server could not be displayed.
-# A few replicas are created inside the server.  
+# A few replicas are created inside the server, just in case if 
+# the primary data source shuts down.
 ##################################################################
 # What data is it not ok to lose in your app? What can you do in your commands to mitigate the risk of lost data?
 # 
